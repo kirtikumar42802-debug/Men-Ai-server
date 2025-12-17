@@ -9,8 +9,8 @@ const port = 3000;
 // 🔴 अपनी API Key यहाँ नीचे पेस्ट करें
 const genAI = new GoogleGenerativeAI("AIzaSyDOZFquCqa0Ckil3_GOwV-E5bt4IBoO2d0");
 
-// हम सबसे नया मॉडल यूज़ कर रहे हैं
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+// 'gemini-pro' सबसे सुरक्षित और भरोसेमंद मॉडल है जो हर जगह चलता है
+const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
 app.use(bodyParser.json());
 app.use(express.static(__dirname));
@@ -26,9 +26,8 @@ app.post('/chat', async (req, res) => {
         const response = await result.response;
         res.json({ reply: response.text() });
     } catch (error) {
-        // 🔴 यह लाइन अब आपको असली एरर बताएगी
         console.error("Error:", error);
-        res.json({ reply: "System Error: " + error.message });
+        res.json({ reply: "Error: " + error.message });
     }
 });
 
