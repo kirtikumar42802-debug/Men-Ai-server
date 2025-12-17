@@ -7,7 +7,7 @@ const app = express();
 const port = 3000;
 
 // 🔴 यहाँ अपनी चाबी (API Key) पेस्ट करें
-const genAI = new GoogleGenerativeAI("AIzaSy_______________________");
+const genAI = new GoogleGenerativeAI("AIzaSyCU0mtBJXeBVL6Ei6y-rpCixTA27kPawt8");
 
 // हमने मॉडल बदलकर 'gemini-pro' कर दिया है जो 100% चलता है
 const model = genAI.getGenerativeModel({ model: "gemini-pro" });
