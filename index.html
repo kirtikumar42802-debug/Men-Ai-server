@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content">
+    <title>Men AI App</title>
+    <style>
+        :root { --theme-color: #00d4ff; --bg-color: #121212; --msg-bg-user: var(--theme-color); --msg-text-user: #000; }
+        body { background-color: var(--bg-color); color: #ffffff; font-family: 'Segoe UI', sans-serif; margin: 0; height: 100dvh; display: flex; flex-direction: column; overflow: hidden; transition: background-color 0.5s ease; }
+        ::-webkit-scrollbar { width: 5px; } ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+        #intro-screen { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; animation: fadeIn 1s ease; }
+        .logo-big { width: 120px; height: 120px; background: linear-gradient(145deg, #1e1e1e, #2a2a2a); border: 3px solid var(--theme-color); border-radius: 50%; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 25px var(--theme-color); margin-bottom: 20px; }
+        .logo-text { color: var(--theme-color); font-size: 2.5rem; font-weight: 900; font-family: 'Arial Black'; }
+        button.start-btn { padding: 15px 40px; font-size: 1.2rem; background: var(--theme-color); color: #000; border: none; border-radius: 50px; font-weight: bold; margin-top: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); cursor: pointer; }
+        #chat-screen { display: none; flex-direction: column; height: 100%; width: 100%; max-width: 600px; margin: 0 auto; background: rgba(255, 255, 255, 0.02); border-left: 1px solid #333; border-right: 1px solid #333; }
+        #chat-header { padding: 15px; background: #1f1f1f; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; box-shadow: 0 2px 10px rgba(0,0,0,0.5); z-index: 10; }
+        .header-title { display: flex; align-items: center; gap: 10px; color: var(--theme-color); font-weight: bold; font-size: 1.2rem; }
+        .header-logo-small { width: 35px; height: 35px; border: 2px solid var(--theme-color); border-radius: 50%; display: flex; justify-content: center; align-items: center; background: #000; }
+        .menu-btn { font-size: 1.8rem; cursor: pointer; color: var(--theme-color); }
+        #messages { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; scroll-behavior: smooth; }
+        .message { padding: 12px 18px; border-radius: 15px; max-width: 85%; font-size: 1rem; line-height: 1.5; word-wrap: break-word; }
+        .user-msg { background: var(--msg-bg-user); color: var(--msg-text-user); align-self: flex-end; border-bottom-right-radius: 2px; }
+        .ai-msg { background: #2d2d2d; color: #fff; align-self: flex-start; border-bottom-left-radius: 2px; border: 1px solid #444; }
+        #input-area { padding: 10px 15px; background: #1f1f1f; border-top: 1px solid #333; display: flex; align-items: center; gap: 10px; }
+        input { flex: 1; padding: 15px; border-radius: 25px; border: none; background: #333; color: white; font-size: 1rem; outline: none; transition: 0.3s; }
+        input:focus { background: #444; }
+        #send-btn { width: 50px; height: 50px; background: var(--theme-color); color: #000; border: none; border-radius: 50%; font-size: 1.5rem; cursor: pointer; display: flex; justify-content: center; align-items: center; }
+        #sidebar { position: fixed; top: 0; right: -300px; width: 280px; height: 100%; background: #1a1a1a; box-shadow: -5px 0 20px rgba(0,0,0,0.8); transition: right 0.3s ease; z-index: 100; padding: 20px; display: flex; flex-direction: column; }
+        #sidebar.open { right: 0; }
+        .close-sidebar { align-self: flex-end; font-size: 2rem; cursor: pointer; margin-bottom: 20px; }
+        .setting-box { margin-bottom: 25px; border-bottom: 1px solid #333; padding-bottom: 15px; }
+        .color-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+        input[type="color"] { width: 50px; height: 40px; border: none; background: none; cursor: pointer; }
+        select { width: 100%; padding: 10px; background: #333; color: white; border: 1px solid #555; border-radius: 5px; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <div id="intro-screen">
+        <div class="logo-big"><span class="logo-text">JTK</span></div>
+        <h1 style="color: var(--theme-color); margin: 0;">Hi Everyone</h1>
+        <p style="color: #888;">Powered by Real Gemini AI</p>
+        <button class="start-btn" onclick="openChat()">Start Chatting</button>
+    </div>
+
+    <div id="chat-screen">
+        <div id="chat-header">
+            <div class="header-title">
+                <div class="header-logo-small"><span style="font-size: 0.7rem;">JTK</span></div>
+                Men AI
+            </div>
+            <div class="menu-btn" onclick="toggleSidebar()">☰</div>
+        </div>
+        <div id="messages">
+            <div class="message ai-msg">Hello! Main JTK Men AI hu (Gemini Powered). Mujhse kuch bhi pucho, main asli insaan ki tarah jawab dunga.</div>
+        </div>
+        <div id="input-area">
+            <input type="text" id="user-input" placeholder="Message..." onkeypress="handleEnter(event)">
+            <button id="send-btn" onclick="sendMessage()">➤</button>
+        </div>
+    </div>
+
+    <div id="sidebar">
+        <span class="close-sidebar" onclick="toggleSidebar()">&times;</span>
+        <div class="setting-box">
+            <h3 style="color: var(--theme-color); margin-top: 0;">Appearance</h3>
+            <div class="color-row"><span>Theme Color</span><input type="color" value="#00d4ff" oninput="changeTheme(this.value)"></div>
+            <div class="color-row"><span>Wallpaper</span><input type="color" value="#121212" oninput="changeWallpaper(this.value)"></div>
+        </div>
+        <div class="setting-box">
+            <h3 style="color: var(--theme-color);">Language</h3>
+            <p style="font-size: 0.8rem; color: #aaa;">AI khud samajh jayega ki aap kis bhasha mein baat kar rahe hain.</p>
+        </div>
+    </div>
+
+    <script>
+        function openChat() { document.getElementById('intro-screen').style.display = 'none'; document.getElementById('chat-screen').style.display = 'flex'; }
+        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
+        function changeTheme(color) { document.documentElement.style.setProperty('--theme-color', color); }
+        function changeWallpaper(color) { document.documentElement.style.setProperty('--bg-color', color); }
+        
+        function handleEnter(e) { if(e.key === 'Enter') sendMessage(); }
+
+        function addMessage(text, type) {
+            let div = document.createElement('div');
+            div.className = `message ${type}`;
+            // Convert simple markdown bold to HTML
+            text = text.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+            div.innerHTML = text;
+            let box = document.getElementById('messages');
+            box.appendChild(div);
+            box.scrollTop = box.scrollHeight;
+        }
+
+        // --- REAL AI LOGIC ---
+        async function sendMessage() {
+            let input = document.getElementById('user-input');
+            let text = input.value.trim();
+            if (!text) return;
+
+            addMessage(text, 'user-msg');
+            input.value = "";
+            
+            // Loading Animation
+            let loadingDiv = document.createElement('div');
+            loadingDiv.className = 'message ai-msg';
+            loadingDiv.id = 'loading';
+            loadingDiv.innerText = "Soch raha hu...";
+            document.getElementById('messages').appendChild(loadingDiv);
+
+            try {
+                // यह मैसेज अब आपके Node.js सर्वर पर जाएगा
+                const response = await fetch('/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: text })
+                });
+
+                const data = await response.json();
+                
+                // Loading हटाओ और जवाब दिखाओ
+                document.getElementById('loading').remove();
+                addMessage(data.reply, 'ai-msg');
+
+            } catch (error) {
+                document.getElementById('loading').remove();
+                addMessage("Server Error! Shayad API Key sahi nahi hai ya server band hai.", 'ai-msg');
+            }
+        }
+    </script>
+</body>
+</html>
