@@ -7,7 +7,7 @@ const app = express();
 const port = 3000;
 
 // 🔴 अपनी API Key यहाँ नीचे पेस्ट करें
-const genAI = new GoogleGenerativeAI("AIzaSyCVXmAaEYegX-zUk1TKvBdlsowKEVwO9RA");
+const genAI = new GoogleGenerativeAI("AIzaSyDOZFquCqa0Ckil3_GOwV-E5bt4IBoO2d0");
 
 // हम सबसे नया मॉडल यूज़ कर रहे हैं
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
