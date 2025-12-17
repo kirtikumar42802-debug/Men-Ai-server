@@ -6,11 +6,11 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 const app = express();
 const port = 3000;
 
-// 🔴 नीचे " " के बीच में अपनी नयी वाली API Key पेस्ट करें
+// 🔴 अपनी API Key यहाँ नीचे पेस्ट करें
 const genAI = new GoogleGenerativeAI("AIzaSyCVXmAaEYegX-zUk1TKvBdlsowKEVwO9RA");
 
-// हमने यहाँ सबसे सुरक्षित मॉडल 'gemini-pro' कर दिया है
-const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+// हम सबसे नया मॉडल यूज़ कर रहे हैं
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 app.use(bodyParser.json());
 app.use(express.static(__dirname));
@@ -26,8 +26,9 @@ app.post('/chat', async (req, res) => {
         const response = await result.response;
         res.json({ reply: response.text() });
     } catch (error) {
-        console.error("Error:", error); // यह असली एरर दिखाएगा
-        res.json({ reply: "Connection Error. Please try again." });
+        // 🔴 यह लाइन अब आपको असली एरर बताएगी
+        console.error("Error:", error);
+        res.json({ reply: "System Error: " + error.message });
     }
 });
 
