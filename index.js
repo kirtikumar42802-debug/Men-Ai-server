@@ -6,11 +6,14 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 const app = express();
 const port = 3000;
 
-// 🔴 यहाँ अपने दोस्त/दूसरी ID वाली नई चाबी पेस्ट करें
-const genAI = new GoogleGenerativeAI("AIzaSyCgqUurfS5iIiKkp1aBhm6wR3XtWFXgzY0");
+// 🔴 यहाँ " " के बीच में अपनी 'नई Gmail वाली' चाबी पेस्ट करें
+const genAI = new GoogleGenerativeAI("AIzaSyCU0mtBJXeBVL6Ei6y-rpCixTA27kPawt8");
 
-// 'gemini-pro' सबसे भरोसेमंद मॉडल है
-const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+// नए अकाउंट के लिए यह मॉडल सबसे बेस्ट और फ्री है
+const model = genAI.getGenerativeModel({ 
+    model: "gemini-1.5-flash",
+    systemInstruction: "You are Men AI. Be helpful, friendly and answer in the language user speaks."
+});
 
 app.use(bodyParser.json());
 app.use(express.static(__dirname));
@@ -26,8 +29,8 @@ app.post('/chat', async (req, res) => {
         const response = await result.response;
         res.json({ reply: response.text() });
     } catch (error) {
-        console.error("Final Error:", error);
-        res.json({ reply: "Account Blocked Error: Please use a different Gmail ID for API Key." });
+        console.error("Error:", error);
+        res.json({ reply: "Error: " + error.message });
     }
 });
 
