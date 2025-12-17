@@ -6,14 +6,11 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 const app = express();
 const port = 3000;
 
-// 🔴 यहाँ " " के बीच में अपनी 'नई Gmail वाली' चाबी पेस्ट करें
-const genAI = new GoogleGenerativeAI("AIzaSyCU0mtBJXeBVL6Ei6y-rpCixTA27kPawt8");
+// 🔴 यहाँ अपनी चाबी (API Key) पेस्ट करें
+const genAI = new GoogleGenerativeAI("AIzaSy_______________________");
 
-// नए अकाउंट के लिए यह मॉडल सबसे बेस्ट और फ्री है
-const model = genAI.getGenerativeModel({ 
-    model: "gemini-1.5-flash",
-    systemInstruction: "You are Men AI. Be helpful, friendly and answer in the language user speaks."
-});
+// हमने मॉडल बदलकर 'gemini-pro' कर दिया है जो 100% चलता है
+const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
 app.use(bodyParser.json());
 app.use(express.static(__dirname));
