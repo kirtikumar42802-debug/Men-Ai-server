@@ -10,7 +10,7 @@ const port = 3000;
 // अगर Render पर Environment Variable सेट नहीं किया तो यह काम नहीं करेगा
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ 
-    model: "gemini-pro",
+    model: "gemini-1.5-flash",
     systemInstruction: "You are Men AI, a helpful, friendly and smart AI assistant created by JTK. Always answer in the language the user speaks."
 });
 
