@@ -1,16 +1,14 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+// हमें 'fetch' चाहिए ताकि हम सीधे Google से पूछ सकें
+const fetch = require('node-fetch'); 
 
 const app = express();
 const port = 3000;
 
-// 🔴 यहाँ अपनी 'MenAi-Final' वाली चाबी पेस्ट करें
-const genAI = new GoogleGenerativeAI("AIzaSyDPsmUbLEj3VMcrsu3Dr7mAKM4JilUGmHg");
-
-// नए प्रोजेक्ट के लिए यह मॉडल सबसे सही है
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+// 🔴 यहाँ अपनी सही वाली चाबी पेस्ट करें
+const API_KEY = "AIzaSyDPsmUbLEj3VMcrsu3Dr7mAKM4JilUGmHg";
 
 app.use(bodyParser.json());
 app.use(express.static(__dirname));
@@ -21,12 +19,21 @@ app.get('/', (req, res) => {
 
 app.post('/chat', async (req, res) => {
     try {
-        const userMessage = req.body.message;
-        const result = await model.generateContent(userMessage);
-        const response = await result.response;
-        res.json({ reply: response.text() });
+        // यह कोड Google से पूछेगा: "मेरे लिए कौन से मॉडल खुले हैं?"
+        const url = `https://generativelanguage.googleapis.com/v1beta/models?key=${API_KEY}`;
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (data.error) {
+            // अगर चाबी या प्रोजेक्ट में गलती है, तो यह बताएगा
+            res.json({ reply: "GOOGLE ERROR: " + JSON.stringify(data.error) });
+        } else {
+            // अगर सब सही है, तो यह मॉडल्स की लिस्ट दिखाएगा
+            const modelNames = data.models.map(m => m.name).join("\n");
+            res.json({ reply: "Available Models:\n" + modelNames });
+        }
     } catch (error) {
-        res.json({ reply: "Error: " + error.message });
+        res.json({ reply: "Server Error: " + error.message });
     }
 });
 
