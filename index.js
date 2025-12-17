@@ -6,11 +6,11 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 const app = express();
 const port = 3000;
 
-// 🔴 अपनी API Key यहाँ नीचे पेस्ट करें
-const genAI = new GoogleGenerativeAI("AIzaSyDOZFquCqa0Ckil3_GOwV-E5bt4IBoO2d0");
+// 🔴 यहाँ अपनी 'दूसरी Gmail वाली' नई चाबी पेस्ट करें
+const genAI = new GoogleGenerativeAI("AIzaSyB9skv_Qw8Vxe9uh4VlR4_33m23yS-xls0");
 
-// 'gemini-pro' सबसे सुरक्षित और भरोसेमंद मॉडल है जो हर जगह चलता है
-const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+// नए अकाउंट के लिए यह मॉडल सबसे बेस्ट है
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 app.use(bodyParser.json());
 app.use(express.static(__dirname));
@@ -26,11 +26,13 @@ app.post('/chat', async (req, res) => {
         const response = await result.response;
         res.json({ reply: response.text() });
     } catch (error) {
-        console.error("Error:", error);
-        res.json({ reply: "Error: " + error.message });
+        console.error("Error Details:", error);
+        // अगर फिर भी एरर आया, तो यह मैसेज दिखेगा
+        res.json({ reply: "Project Error: Google Cloud Project seems disabled." });
     }
 });
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+  
