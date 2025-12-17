@@ -8,7 +8,7 @@ const port = 3000;
 
 // Replit या Render के Secret से चाबी निकालना
 // अगर Render पर Environment Variable सेट नहीं किया तो यह काम नहीं करेगा
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const genAI = new GoogleGenerativeAI("AIzaSyDWGGVtwAeaverplHJFu80I1_ufkHk1QwQ");
 const model = genAI.getGenerativeModel({ 
     model: "gemini-pro",
     systemInstruction: "You are Men AI, a helpful, friendly and smart AI assistant created by JTK. Always answer in the language the user speaks."
