@@ -7,7 +7,7 @@ const app = express();
 const port = 3000;
 
 // 🔴 यहाँ अपनी 'दूसरी Gmail वाली' नई चाबी पेस्ट करें
-const genAI = new GoogleGenerativeAI("AIzaSyB9skv_Qw8Vxe9uh4VlR4_33m23yS-xls0");
+const genAI = new GoogleGenerativeAI("AIzaSyDbEJTWIwaln1-qtTQUEXaQ0xf2y-1a7E4");
 
 // नए अकाउंट के लिए यह मॉडल सबसे बेस्ट है
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
